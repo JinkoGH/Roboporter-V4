@@ -76,7 +76,7 @@ Communication within the Roboporter framework is divided across continuous high-
 
 ### 1. Hardware-Bounded ROS 2 Computation Graph
 
-![Hardware-Bounded ROS 2 Computation Graph](Images/Hardware-Bounded-Computation-Graph.svg)
+![Hardware-Bounded ROS 2 Computation Graph](Images/Hardware-Bounded-Computation-Graph-TB.svg)
 
 ---
 
@@ -88,61 +88,54 @@ Communication within the Roboporter framework is divided across continuous high-
 
 ## Repository Directory Structure
 
+
 ```text
-roboporter_ws/
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   └── feature_request.md
-│   └── workflows/
-│       └── ros_ci.yml                  # GitHub Actions CI for Colcon build & linting
-├── config/
-│   ├── cmd_vel_mux.yaml                # Priority rules for command multiplexing
-│   ├── foxglove_dashboard.json         # Preset Foxglove Studio diagnostic layout
-│   └── teleop_config.yaml              # Gamepad button/axis mapping and deadzones
-├── docs/
-│   ├── diagrams/
-│   │   ├── computation_graph.md
-│   │   └── layered_software_abstraction.md
-│   ├── hardware_mapping.md             # Hardware pinout and UART mapping
-│   └── setup_tasks.md                  # Task setup documentation
-├── firmware/
-│   └── arduino_mega_control/
-│       ├── arduino_mega_control.ino    # MCU main loop & serial listener
-│       ├── encoder_driver.h            # Quadrature encoder ISR handlers (HEDS-5500)
-│       └── esc_driver.h                # Dual PWM output driver for Mtronics ESCs
-└── src/
-    ├── roboporter_bringup/             # Top-level launch files
-    │   ├── launch/
-    │   │   ├── operator_pc.launch.py   # Launches joy_node & teleop_twist_joy
-    │   │   └── robot_onboard.launch.py # Launches drivers, watchdog, mux & bridge
+# Python 
+
+Roboporter-V4/
+├── config/                         # Global system parameters, Foxglove layouts, and launch configs
+├── docs/                           # Architecture diagrams, task lists, and project documentation
+├── firmware/                       # Embedded MCU microcode
+│   └── arduino_mega_control/       # Arduino Mega 2560 R3 firmware (PID motor loops & encoder ISRs)
+├── Images/                         # Project diagrams and computation graph assets
+│   ├── Hardware-Bounded-Computation-Graph.svg
+│   ├── Hardware-Bounded-Computation-Graph-TB.svg
+│   └── Layered-Software-Abstraction.svg
+├── LICENSE                         # Project license
+├── README.md                       # Project overview and setup instructions
+└── src/                            # ROS 2 Colcon Workspace Source Directory
+    ├── roboporter_bringup/         # [ROS 2 Package - Launch & System Integration]
+    │   ├── launch/                 # System bringup launch files (teleop, sensors, safety)
+    │   ├── config/                 # Subsystem parameter files (.yaml)
     │   ├── package.xml
     │   └── CMakeLists.txt
-    ├── roboporter_description/         # URDF/Xacro digital twin model
-    │   ├── urdf/
-    │   │   ├── roboporter.urdf.xacro
-    │   │   └── roboporter_gazebo.xacro
-    │   ├── package.xml
-    │   └── CMakeLists.txt
-    ├── roboporter_drivers/             # Custom hardware interface wrapper nodes
-    │   ├── roboporter_drivers/
-    │   │   ├── arduino_bridge_node.py
-    │   │   └── ultrasonic_driver_node.py
+    ├── roboporter_teleop/          # [ROS 2 Package - Python / ament_python]
+    │   ├── roboporter_teleop/      # 8BitDo gamepad parsing & joystick teleop nodes
     │   ├── package.xml
     │   └── setup.py
-    ├── roboporter_gazebo/              # Gazebo simulation worlds and setups
-    │   ├── worlds/
-    │   │   └── mappin_floor.world      # Digital twin of Mappin Building floor
-    │   ├── launch/
-    │   │   └── gazebo_sim.launch.py
-    │   ├── package.xml
-    │   └── CMakeLists.txt
-    ├── roboporter_safety/              # Watchdog & arbitration logic
-    │   ├── roboporter_safety/
-    │   │   └── watchdog_node.py
+    ├── roboporter_safety/          # [ROS 2 Package - Python / ament_python]
+    │   ├── roboporter_safety/      # Watchdog node, heartbeat monitor & cmd_vel_mux arbitration
     │   ├── package.xml
     │   └── setup.py
-    └── roboporter_teleop/              # Teleoperation wrappers & launch configs
+    ├── roboporter_drivers/         # [ROS 2 Package - C++ / Python / ament_cmake]
+    │   ├── src/                    # High-frequency serial bridge & ultrasonic driver nodes
+    │   ├── include/                # Driver headers and message abstractions
+    │   ├── package.xml
+    │   └── CMakeLists.txt
+    ├── roboporter_description/     # [ROS 2 Package - Robot Description]
+    │   ├── urdf/                   # Roboporter Xacro / URDF kinematic models
+    │   ├── meshes/                 # Visual and collision STL/DAE geometries
+    │   ├── package.xml
+    │   └── CMakeLists.txt
+    ├── roboporter_gazebo/          # [ROS 2 Package - Simulation Groundwork]
+    │   ├── worlds/                 # Mappin building 3D simulation worlds
+    │   ├── launch/                 # Gazebo digital twin spawn scripts
+    │   ├── package.xml
+    │   └── CMakeLists.txt
+    └── roboporter_navigation/      # [ROS 2 Package - Phase 2 Target / C++ ament_cmake]
+        ├── config/                 # Nav2 planner/controller costmap parameters
+        ├── maps/                   # Saved 2D occupancy grid maps (Mappin floorplan)
+        ├── src/                    # Custom BehaviorTree.CPP leaf nodes & plugins
         ├── package.xml
         └── CMakeLists.txt
 ```
@@ -168,7 +161,7 @@ The `watchdog_node` runs as a high-priority supervisor process on the Raspberry 
 ## Getting Started & Installation
 
 ### Prerequisites
-- **ROS 2 Humble Hawksbill** installed on Ubuntu 22.04 LTS (Desktop version for Operator PC, Server/Minimal for RPi 4B).
+- **ROS 2 Lyrical** installed on Ubuntu 26.04 LTS (Desktop version for Operator PC, Server/Minimal for RPi 4B).
 - `colcon` build system and standard ROS 2 dependencies (`geometry_msgs`, `sensor_msgs`, `nav_msgs`, `std_srvs`).
 - **Foxglove Studio** installed on the Operator Base Station PC.
 
