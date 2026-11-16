@@ -8,6 +8,15 @@ Welcome to the central software repository for the **Roboporter Project (2026/20
 
 **Phase 1** focuses strictly on establishing the core ROS 2 software infrastructure, manual teleoperation via an 8BitDo Ultimate Gamepad, command arbitration, safety watchdogs, sensor drivers, Foxglove Studio telemetry streaming, and establishing the groundwork for a Gazebo simulation digital twin in preparation for Phase 2 (full autonomy via Nav2 and SLAM Toolbox).
 
+--- 
+
+## Predecessor projects
+
+Roboporter V4 builds upon the mechanical chassis and hardware baseline developed across three prior University of Sheffield group projects:
+- **Roboporter V1 (2013–2014):** [Project Report Code](docs/Predecessor%20projects/Roboporter%20report%202014%20code.pdf)
+- **Roboporter V2 (2017–2018):** [GitHub Repository](https://github.com/flemish4/RoboPorter)
+- **Roboporter V3 (2023–2024):** [GitHub Repository](https://github.com/chtbaldwin2/EEE481-Roboporter)
+
 ---
 
 ## Table of Contents
