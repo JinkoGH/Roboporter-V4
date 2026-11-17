@@ -1,0 +1,1 @@
+These files in the /misc folder contains unstructured code take from Nurul's ROS 2 and controller test. Note older version of ROS 2 (Jazzy was used with an older verison of Ubuntu 24.04)
