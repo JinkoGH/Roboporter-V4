@@ -20,14 +20,14 @@ This document outlines the tasks required to initialise, structure, and configur
 | Category | Task ID & Name | Summary Description | Priority | Owner | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **1. Repo Admin & Governance** | **1.1–1.4 Repo & Branch Setup** | Initialise repo, add license, ROS 2/Arduino `.gitignore`, and branch protections on `main` and `dev`. | **Completed** | **Ivan** | Done |
-| **1. Repo Admin & Governance** | **1.5 GitHub Actions CI/CD** | Automate `colcon build`, `colcon test`, and linters (`flake8`, `cpplint`, `pep257`) on pull requests (post-demo enforcement). | **Medium** | **Ivan** | Pending |
+| **1. Repo Admin & Governance** | **1.5 GitHub Actions CI/CD** | Automate `colcon build`, `colcon test`, and linters (`flake8`, `cpplint`, `pep257`) on pull requests (post-demo enforcement). | **Low** | **Ivan** | Pending |
 | **1. Repo Admin & Governance** | **1.6 Issue & PR Templates** | Create templates for Bug Reports, Feature Requests, and Hardware Integration Tests. | **Low** | **Yuqi** | Pending |
 | **2. Core Control & Safety** | **2.1 Colcon Workspace Layout** | Establish root directory structure (`src/`, `firmware/`, `config/`, `docs/`, `Images/`). | **Completed** | **Ivan** | Done |
 | **2. Core Control & Safety** | **2.2 Core ROS 2 Packages** | Scaffold `roboporter_bringup`, `roboporter_teleop`, and `roboporter_safety` (`watchdog_node`, `cmd_vel_mux`). | **Critical** | **Ivan** | Pending |
 | **2. Core Control & Safety** | **2.3 MCU Firmware Scaffolding** | Set up `firmware/arduino_mega_control/` for serial command parsing, HEDS-5500 encoder ISRs, and Mtronics ESC PWM outputs. | **Critical** | **Ivan** *(repo)* / **Nurul** *(bench PWM)* | Pending |
 | **2. Core Control & Safety** | **2.4 Multiplexer Rules Config** | Create `config/cmd_vel_mux.yaml` setting priorities: Failsafe (1), Teleop (2), Nav2 (3). | **Critical** | **Ivan** | Pending |
 | **2. Core Control & Safety** | **2.5 Teleop Gamepad Config** | Create `config/teleop_config.yaml` with 8BitDo Ultimate button/axis mappings, deadzones, and velocity limits. | **High** | **Ivan** | Pending |
-| **3. Diagnostics, Sensors & Sim** | **3.1 Foxglove Studio Layout** | Build and commit `config/foxglove_dashboard.json` for `/sys_health`, `/battery_status`, `/odom`, and `/scan`. | **Low** | **Yuqi** | Pending |
+| **3. Diagnostics, Sensors & Sim** | **3.1 Foxglove Studio Layout** | Build and commit `config/foxglove_dashboard.json` for `/sys_health`, `/battery_status`, `/odom`, and `/scan`. | **High** | **Yuqi** | Pending |
 | **3. Diagnostics, Sensors & Sim** | **3.2a Microcontroller Serial Bridge** | Implement `arduino_bridge_node` in `roboporter_drivers` to translate `/cmd_vel` into USB serial packets (`/dev/ttyACM1`) and publish encoder/battery telemetry. | **Critical** | **Ivan** | Pending |
 | **3. Diagnostics, Sensors & Sim** | **3.2b Sensor Drivers & Simulation** | Implement `rplidar_node` and `ultrasonic_driver_node` wrappers, `roboporter_description` (URDF/Xacro), and `roboporter_gazebo` (Mappin world). | **Low** *(Late Phase 1)* | **Yuqi** | Pending |
 | **4. System Documentation** | **4.1 Architecture Diagrams** | Embed Mermaid.js sources and SVGs for Computation Graph and Layered Abstraction Diagram. | **Completed** | **Ivan** | Done |
