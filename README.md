@@ -13,7 +13,7 @@ Welcome to the central software repository for the **Roboporter Project (2026/20
 ## Predecessor projects
 
 Roboporter V4 builds upon the mechanical chassis and hardware baseline developed across three prior University of Sheffield group projects:
-- **Roboporter V1 (2013–2014):** [Project Report Code](docs/Predecessor%20projects/Roboporter%20report%202014%20code.pdf)
+- **Roboporter V1 (2013–2014):** [Project Report Code](docs/predecessor%20projects/Roboporter%20report%202014%20code.pdf)
 - **Roboporter V2 (2017–2018):** [GitHub Repository](https://github.com/flemish4/RoboPorter)
 - **Roboporter V3 (2023–2024):** [GitHub Repository](https://github.com/chtbaldwin2/EEE481-Roboporter)
 
@@ -85,13 +85,13 @@ Communication within the Roboporter framework is divided across continuous high-
 
 ### 1. Hardware-Bounded ROS 2 Computation Graph
 
-![Hardware-Bounded ROS 2 Computation Graph](Images/Hardware-Bounded-Computation-Graph-TB.svg)
+![Hardware-Bounded ROS 2 Computation Graph](docs/images/Hardware-Bounded-Computation-Graph-TB.svg)
 
 ---
 
 ### 2. Layered Software Abstraction Diagram
 
-![Layered Software Abstraction Diagram](Images/Layered-Software-Abstraction.svg)
+![Layered Software Abstraction Diagram](docs/images/Layered-Software-Abstraction.svg)
 
 ---
 
