@@ -63,7 +63,7 @@ Communication within the Roboporter framework is divided across continuous high-
 | **RPi 4B: Microcontroller Bridge**     | `arduino_bridge_node`               | `/cmd_vel` (from Mux), USB Serial (`/dev/ttyACM1`) | Topic (Subscriber / Publisher)   | `/odom`, `/battery_status`                                          | `nav_msgs/msg/Odometry`, `std_msgs/msg/Float32` |
 |                                        | `arduino_bridge_node`               | `/reset_odometry` _(Request)_                      | Service (Server)                 | Reset stored encoder counts & zero $(x,y,\theta)$ pose _(Response)_ | `std_srvs/srv/Trigger`                          |
 |                                        | `arduino_bridge_node`               | `/calibrate_encoders` _(Request)_                  | Service (Server)                 | Trigger wheel motor encoder calibration _(Response)_                | `std_srvs/srv/SetBool`                          |
-| **RPi 4B: Telemetry Gateway Layer**    | `foxglove_bridge`                   | `/scan`, `/odom`, `/tf`, `/sys_health`             | Topic (Subscriber) / WS Server   | Encapsulated WebSocket Stream                                       | `ros-humble-foxglove-bridge` (TCP Port 8765)    |
+| **RPi 4B: Telemetry Gateway Layer**    | `foxglove_bridge`                   | `/scan`, `/odom`, `/tf`, `/sys_health`             | Topic (Subscriber) / WS Server   | Encapsulated WebSocket Stream                                       | `ros-lyrical-foxglove-bridge` (TCP Port 8765)    |
 | **Arduino Mega 2560 R3 Firmware**      | `embedded_control_loop`             | Serial commands (`cmd_vel`), HEDS-5500 Encoders    | Hardware Control / Serial Bridge | Dual PWM outputs to Mtronics ESCs                                   | 5V PWM signal / `analogWrite`                   |
 
 ---
@@ -85,11 +85,17 @@ Communication within the Roboporter framework is divided across continuous high-
 
 ### 1. Hardware-Bounded ROS 2 Computation Graph
 
-![Hardware-Bounded ROS 2 Computation Graph](docs/images/Hardware-Bounded-Computation-Graph-TB.svg)
+![Hardware-Bounded ROS 2 Computation Graph](docs/images/Hardware-bound-computation-diagram.png)
 
 ---
 
-### 2. Layered Software Abstraction Diagram
+### 2. Layered Software Abstraction Diagram (needs updating)
+
+**Legend:**
+- **Solid lines (`-->`)**: Continuous ROS 2 Topics (high-frequency data streams)
+- **Dashed lines (`-.->`)**: On-demand ROS 2 Service calls (request/response commands)[
+- **Thick lines (`==>`)**: Physical hardware buses (USB cables, GPIO, PWM, and encoder wires)
+- **`(Wi-Fi)` tag**: Communication crossing the wireless network between PC and Robot
 
 ![Layered Software Abstraction Diagram](docs/images/Layered-Software-Abstraction.svg)
 
