@@ -85,7 +85,7 @@ Communication within the Roboporter framework is divided across continuous high-
 
 ### 1. Hardware-Bounded ROS 2 Computation Graph
 
-![Hardware-Bounded ROS 2 Computation Graph](docs/images/Hardware-bound-computation-diagram.png)
+![Hardware-Bounded ROS 2 Computation Graph](docs/images/simplified-computation-diagram.png)
 
 ---
 
