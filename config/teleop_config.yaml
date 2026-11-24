@@ -1,0 +1,29 @@
+teleop_twist_joy_node:
+  ros__parameters:
+    # Deadman enable buttons: LB (buttons[4]) = normal speed, RB (buttons[5]) = turbo/bench check
+    require_enable_button: true
+    enable_button: 4          # LB bumper (must be held to publish non-zero Twist)
+    enable_turbo_button: 5    # RB bumper (optional secondary speed tier)
+
+    # Analog stick mappings
+    axis_linear:
+      x: 1                    # Left Stick Vertical (+1.0 forward, -1.0 reverse)
+    axis_angular:
+      yaw: 3                  # Right Stick Horizontal (+1.0 left, -1.0 right)
+
+    # Conservative velocity scaling limits for unloaded bench testing
+    scale_linear:
+      x: 0.25                 # Max m/s linear velocity on bench
+    scale_linear_turbo:
+      x: 0.40                 # Max m/s when RB is held
+
+    scale_angular:
+      yaw: 0.50               # Max rad/s angular velocity on bench
+    scale_angular_turbo:
+      yaw: 0.80               # Max rad/s when RB is held
+
+    # Ignore analog stick resting jitter around 0.0
+    axis_deadzone: 0.08
+
+    # Force standard geometry_msgs/msg/Twist (not TwistStamped)
+    publish_stamped_twist: false

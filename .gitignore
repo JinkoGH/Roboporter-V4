@@ -1,0 +1,14 @@
+# ROS 2 Colcon build artifacts
+build/
+install/
+log/
+
+# Python virtual environments & bytecode
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Local IDE & temporary scratch files
+.vscode/
+misc (temp)/
