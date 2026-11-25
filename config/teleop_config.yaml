@@ -13,14 +13,14 @@ teleop_twist_joy_node:
 
     # Conservative velocity scaling limits for unloaded bench testing
     scale_linear:
-      x: 0.25                 # Max m/s linear velocity on bench
+      x: 0.25                 # Max x m/s linear velocity on bench
     scale_linear_turbo:
-      x: 0.40                 # Max m/s when RB is held
+      x: 0.40                 # Max x m/s when RB is held
 
     scale_angular:
-      yaw: 0.50               # Max rad/s angular velocity on bench
+      yaw: 0.50               # Max yaw rad/s angular velocity on bench
     scale_angular_turbo:
-      yaw: 0.80               # Max rad/s when RB is held
+      yaw: 0.80               # Max yaw rad/s when RB is held
 
     # Ignore analog stick resting jitter around 0.0
     axis_deadzone: 0.08
