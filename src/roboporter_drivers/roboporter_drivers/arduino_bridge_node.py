@@ -14,6 +14,7 @@ Acts as the translation layer between high-level ROS 2 velocity commands and the
 
 import serial
 import rclpy
+import math
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
@@ -23,6 +24,7 @@ from std_srvs.srv import Trigger, SetBool
 def clamp(val: float, low: float, high: float) -> float:
     """Constrains `val` strictly within `[low, high]` so PWM commands never overflow."""
     return max(low, min(high, val))
+
 
 
 class ArduinoBridgeNode(Node):
@@ -59,13 +61,25 @@ class ArduinoBridgeNode(Node):
         self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
         self.batt_pub = self.create_publisher(Float32, '/battery_status', 10)
 
-        # Services: Opeator controls to Fxoglove Studio & ROS CLI
+        # Services: Opeator controls to Foxglove Studio & ROS CLI
         self.create_service(Trigger, '/reset_odometry', self._reset_odom_cb)
         self.create_service(SetBool, '/calibrate_encoders', self._calibrate_cb)
 
         # 4. Serial Connection & Periodic I/O Loop
         self._connect_serial()
         self.create_timer(1.0 / self.tx_rate, self._io_timer_cb)
+
+        # 5. Convert incoming 1024 CDR ticks into linear velocity and integrated pose
+        # self.declare_parameter('counts_per_rev', 1024.0)   # 256 PPR * 4x quadrature
+        # self.declare_parameter('wheel_radius_m', 130)    
+        # self.cpr = self.get_parameter('counts_per_rev').value
+        # self.wheel_r = self.get_parameter('wheel_radius_m').value
+        # self.prev_left_ticks = None
+        # self.prev_right_ticks = None
+        # self.last_odom_time = None
+        # self.x = 0.0
+        # self.y = 0.0
+        # self.theta = 0.0
 
     def _connect_serial(self):
         """
@@ -174,8 +188,34 @@ class ArduinoBridgeNode(Node):
         odom.header.stamp = self.get_clock().now().to_msg()
         odom.header.frame_id = 'odom'
         odom.child_frame_id = 'base_link'
-        self.odom_pub.publish(odom)
 
+        # 5. Convert incoming 1024 CDR ticks into linear velocity and integrated pose
+        # now = self.get_clock().now()
+        # if self.prev_left_ticks is not None and self.last_odom_time is not None:
+        #     dt = (now - self.last_odom_time).nanoseconds * 1e-9
+        #     if dt > 1e-4:
+        #         d_left = (2.0 * math.pi * self.wheel_r) * ((self.left_ticks - self.prev_left_ticks) / self.cpr)
+        #         d_right = (2.0 * math.pi * self.wheel_r) * ((self.right_ticks - self.prev_right_ticks) / self.cpr)
+        #         d_center = 0.5 * (d_left + d_right)
+        #         d_theta = (d_right - d_left) / self.wheel_sep
+
+        #         self.x += d_center * math.cos(self.theta + 0.5 * d_theta)
+        #         self.y += d_center * math.sin(self.theta + 0.5 * d_theta)
+        #         self.theta += d_theta
+
+        #         odom.pose.pose.position.x = self.x
+        #         odom.pose.pose.position.y = self.y
+        #         odom.pose.pose.orientation.z = math.sin(self.theta * 0.5)
+        #         odom.pose.pose.orientation.w = math.cos(self.theta * 0.5)
+        #         odom.twist.twist.linear.x = d_center / dt
+        #         odom.twist.twist.angular.z = d_theta / dt
+
+        # self.prev_left_ticks = self.left_ticks
+        # self.prev_right_ticks = self.right_ticks
+        # self.last_odom_time = now
+
+        # 6. Pulish data to Foxglove Studio & ROS CLI
+        self.odom_pub.publish(odom)
 
 def main(args=None):
     rclpy.init(args=args)
