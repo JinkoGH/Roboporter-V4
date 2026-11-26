@@ -1,0 +1,16 @@
+watchdog_node:
+  ros__parameters:
+    comms_timeout_sec: 0.25        # Trigger failsafe if /teleop_cmd_vel gap > 250 ms
+    publish_rate_hz: 25.0          # 40 ms publish period (< 250 ms budget)
+    min_battery_voltage: 10.5      # Low-voltage cutoff threshold (V)
+    enable_battery_check: false    # Keep false until voltage divider is wired
+    auto_clear_comms_timeout: true # Auto-resume when fresh teleop frames arrive
+
+cmd_vel_mux:
+  ros__parameters:
+    publish_rate_hz: 25.0
+    source_timeout_sec: 0.25
+    priorities:
+      failsafe: 1                  # /failsafe_cmd_vel (highest priority)
+      teleop: 2                    # /teleop_cmd_vel   (manual operator)
+      nav: 3                       # /nav_cmd_vel      (reserved for Phase 2)
